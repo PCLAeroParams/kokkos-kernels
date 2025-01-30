@@ -183,7 +183,9 @@ struct BDF_Solve_wrapper {
         temp2(temp2_) {}
 
   KOKKOS_FUNCTION void operator()(const int) const {
-    KokkosODE::Experimental::BDFSolve(my_ode, t_start, t_end, dt, max_step, y0, y_new, temp, temp2);
+    const vec_type rhs    = Kokkos::subview(temp, Kokkos::ALL(), 0);
+    const vec_type update = Kokkos::subview(temp, Kokkos::ALL(), 1);
+    KokkosODE::Experimental::BDFSolve(my_ode, t_start, t_end, dt, max_step, y0, y_new, temp, temp2, rhs, update);
   }
 };
 
